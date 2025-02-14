@@ -2,6 +2,7 @@ package tech.buildrun.customerconnect.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,5 +46,13 @@ public class CustomerController {
                 pageResp.getContent(),
                 new PaginationResponse(pageResp.getNumber(), pageResp.getSize(), pageResp.getTotalElements(), pageResp.getTotalPages())
         ));
+    }
+
+    @GetMapping(path = "/{customerId}")
+    public ResponseEntity<CustomerEntity> findById(@PathVariable("customerId") Long customerId) {
+        var user = customerService.findById(customerId);
+
+        return user.isPresent() ? ResponseEntity.ok(user.get()) :
+                ResponseEntity.notFound().build();
     }
 }

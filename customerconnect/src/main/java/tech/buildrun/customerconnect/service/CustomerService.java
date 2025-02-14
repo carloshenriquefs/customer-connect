@@ -8,6 +8,8 @@ import tech.buildrun.customerconnect.controller.dto.CreateCustomerDto;
 import tech.buildrun.customerconnect.entity.CustomerEntity;
 import tech.buildrun.customerconnect.repository.CustomerRepository;
 
+import java.util.Optional;
+
 import static org.springframework.util.StringUtils.hasText;
 
 @Service
@@ -40,6 +42,10 @@ public class CustomerService {
         var pageRequest = getPageRequest(page, pageSize, orderBy);
 
         return findWithFilter(cpf, email, pageRequest);
+    }
+
+    public Optional<CustomerEntity> findById(Long customerId) {
+        return customerRepository.findById(customerId);
     }
 
     private Page<CustomerEntity> findWithFilter(String cpf, String email, PageRequest pageRequest) {
