@@ -63,6 +63,17 @@ public class CustomerService {
         return customer;
     }
 
+    public boolean deleteById(Long customerId) {
+
+        var exists = customerRepository.existsById(customerId);
+
+        if (exists) {
+            customerRepository.deleteById(customerId);
+        }
+
+        return exists;
+    }
+
     private void updateFields(UpdateCustomerDto dto, Optional<CustomerEntity> customer) {
         if (hasText(dto.fullName())) {
             customer.get().setFullName(dto.fullName());

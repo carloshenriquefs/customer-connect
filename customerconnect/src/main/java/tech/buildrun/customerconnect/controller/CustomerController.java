@@ -1,6 +1,7 @@
 package tech.buildrun.customerconnect.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,16 @@ public class CustomerController {
         var customer = customerService.updateById(customerId, dto);
 
         return customer.isPresent() ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping(path = "/{customerId}")
+    public ResponseEntity<CustomerEntity> deleteById(@PathVariable("customerId") Long customerId) {
+
+        var deleted = customerService.deleteById(customerId);
+
+        return deleted ?
                 ResponseEntity.noContent().build() :
                 ResponseEntity.notFound().build();
     }
