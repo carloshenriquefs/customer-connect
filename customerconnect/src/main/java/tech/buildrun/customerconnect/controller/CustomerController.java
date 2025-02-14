@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tech.buildrun.customerconnect.controller.dto.ApiResponse;
 import tech.buildrun.customerconnect.controller.dto.CreateCustomerDto;
 import tech.buildrun.customerconnect.controller.dto.PaginationResponse;
+import tech.buildrun.customerconnect.controller.dto.UpdateCustomerDto;
 import tech.buildrun.customerconnect.entity.CustomerEntity;
 import tech.buildrun.customerconnect.service.CustomerService;
 
@@ -53,6 +55,17 @@ public class CustomerController {
         var user = customerService.findById(customerId);
 
         return user.isPresent() ? ResponseEntity.ok(user.get()) :
+                ResponseEntity.notFound().build();
+    }
+
+    @PutMapping(path = "/{customerId}")
+    public ResponseEntity<CustomerEntity> updateById(@PathVariable("customerId") Long customerId,
+                                                     @RequestBody UpdateCustomerDto dto) {
+
+        var customer = customerService.updateById(customerId, dto);
+
+        return customer.isPresent() ?
+                ResponseEntity.noContent().build() :
                 ResponseEntity.notFound().build();
     }
 }
